@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/moder")
+@RequestMapping("/admin")
 @RestController
 @AllArgsConstructor
 public class ModeratorController {

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VideoDTO {
+public class VideoDto {
     private String name;
     private String link;
 }

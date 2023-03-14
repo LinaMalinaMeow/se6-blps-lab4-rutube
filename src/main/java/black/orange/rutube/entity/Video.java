@@ -1,12 +1,11 @@
 package black.orange.rutube.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import javax.persistence.*;
 
 @Entity
 @Table
@@ -14,14 +13,14 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Video {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Video extends BaseEntity {
+    @Column(name = "name")
     private String name;
-    private Instant createdDate = Instant.now();
+
+    @Column(name = "link")
     private String link;
+
+    @Column(name = "video_status")
     @Enumerated(EnumType.STRING)
     private VideoStatus videoStatus = VideoStatus.REVIEW;
 }
