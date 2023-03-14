@@ -12,7 +12,7 @@
         </preConditions>
         <createTable tableName="users">
             <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true"/>
             </column>
 
             <column name="email" type="VARCHAR(255)">
@@ -105,7 +105,7 @@
             </column>
 
             <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="link" type="VARCHAR(100)">
@@ -113,7 +113,7 @@
             </column>
 
             <column name="video_status" type="VARCHAR(100)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="created" type="TIMESTAMP" defaultValue="${now}">

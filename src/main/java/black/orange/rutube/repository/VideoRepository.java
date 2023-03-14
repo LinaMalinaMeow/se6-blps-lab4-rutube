@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VideoRepository extends JpaRepository<Video, Integer> {
+public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findAllByVideoStatus(VideoStatus videoStatus);
 }

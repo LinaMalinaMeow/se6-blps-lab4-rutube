@@ -26,7 +26,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public String auth(AuthenticationRequestDto authUser) throws AuthException {
-        User userFromDataBase = findByEmail(authUser.getEmail());
+        User userFromDataBase = findUserByEmail(authUser.getEmail());
         if (userFromDataBase == null) {
             throw new AuthException("User not found");
         }
@@ -57,7 +57,7 @@ public class UserService {
     }
 
 
-    public User findByEmail(String email) {
+    public User findUserByEmail(String email) {
         User result = userRepository.findByEmail(email);
         log.info("IN findByUsername - user: {} found by email: {}", result, email);
         return result;

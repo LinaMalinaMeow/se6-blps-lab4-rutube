@@ -20,7 +20,7 @@ public class ModeratorController {
     }
 
     @PutMapping
-    public Video updateVideo(@RequestParam int id, @RequestParam boolean isApproved) {
+    public Video updateVideo(@RequestParam long id, @RequestParam boolean isApproved) {
         Video video = videoRepository.findById(id).orElseThrow(NullPointerException::new);
         if (isApproved) {
             video.setVideoStatus(VideoStatus.APPROVED);
