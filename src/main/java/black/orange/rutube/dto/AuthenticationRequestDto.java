@@ -1,12 +1,15 @@
 package black.orange.rutube.dto;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-@Data
+@Getter
+@Setter
 public class AuthenticationRequestDto {
     @NonNull
     @Email(message = "Невалидный mail")

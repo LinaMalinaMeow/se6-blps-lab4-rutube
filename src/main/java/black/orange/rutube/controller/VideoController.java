@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/user/video")
@@ -17,7 +19,7 @@ public class VideoController {
     private VideoService videoService;
 
     @PostMapping
-    public ResponseEntity<Video> addVideo(@RequestBody VideoDto videoDTO) {
+    public ResponseEntity<Video> addVideo(@Valid @RequestBody VideoDto videoDTO) {
         return ResponseEntity.ok(videoService.addVideo(videoDTO));
     }
 }

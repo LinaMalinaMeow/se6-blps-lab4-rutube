@@ -3,6 +3,9 @@ package black.orange.rutube.service;
 import black.orange.rutube.dto.AuthenticationRequestDto;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.entity.User;
+import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
+import black.orange.rutube.exception.auth.EntityNotFoundException;
+import black.orange.rutube.exception.auth.WrongAuthException;
 import black.orange.rutube.repository.RoleRepository;
 import black.orange.rutube.repository.UserRepository;
 import black.orange.rutube.security.jwt.JwtTokenProvider;
@@ -20,6 +23,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class UserService {
+    private final String ENTITY_CLASS_NAME = "Пользователь";
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -28,17 +32,21 @@ public class UserService {
     public String auth(AuthenticationRequestDto authUser) throws AuthException {
         User userFromDataBase = findUserByEmail(authUser.getEmail());
         if (userFromDataBase == null) {
-            throw new AuthException("User not found");
+            throw new EntityNotFoundException(ENTITY_CLASS_NAME);
         }
 
         if (passwordEncoder.matches(authUser.getPassword(), userFromDataBase.getPassword())) {
             return jwtTokenProvider.createToken(authUser.getEmail(), userFromDataBase.getRoles());
         }
 
-        throw new AuthException("Wrong email or password");
+        throw new WrongAuthException();
     }
 
     public String register(AuthenticationRequestDto authUser) {
+        if (userRepository.existsByEmail(authUser.getEmail())) {
+            throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
+        }
+
         Role roleUser = roleRepository.findByName("ROLE_USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);

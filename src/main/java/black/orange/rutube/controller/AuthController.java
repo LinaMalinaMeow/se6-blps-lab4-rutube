@@ -15,10 +15,9 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 public class AuthController {
-
     private UserService userService;
 
-    @PostMapping(value = "/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody AuthenticationRequestDto authenticationRequestDto) {
         String token = userService.register(authenticationRequestDto);
         return ResponseEntity.ok().body(token);
