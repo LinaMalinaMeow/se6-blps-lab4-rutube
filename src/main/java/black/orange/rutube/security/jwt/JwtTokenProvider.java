@@ -3,6 +3,7 @@ package black.orange.rutube.security.jwt;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.exception.auth.JwtTokenException;
 import black.orange.rutube.security.JwtUserDetailsService;
+import black.orange.rutube.service.RolesService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +34,8 @@ public class JwtTokenProvider {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+    @Autowired
+    private  RolesService rolesService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -48,7 +50,7 @@ public class JwtTokenProvider {
     public String createToken(String email, List<Role> roles) {
 
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put("roles", getRoleNames(roles));
+        claims.put("roles", rolesService.getRoleNames(roles));
 
 
         Date now = new Date();
@@ -86,15 +88,5 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             throw new JwtTokenException();
         }
-    }
-
-    private List<String> getRoleNames(List<Role> userRoles) {
-        List<String> result = new ArrayList<>();
-
-        userRoles.forEach(role -> {
-            result.add(role.getName());
-        });
-
-        return result;
     }
 }

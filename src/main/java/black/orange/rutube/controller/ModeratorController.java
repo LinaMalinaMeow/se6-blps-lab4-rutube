@@ -1,8 +1,7 @@
 package black.orange.rutube.controller;
 
 import black.orange.rutube.entity.Video;
-import black.orange.rutube.entity.VideoStatus;
-import black.orange.rutube.repository.VideoRepository;
+import black.orange.rutube.service.ModeratorService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +11,15 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class ModeratorController {
-    private VideoRepository videoRepository;
+    private ModeratorService moderatorService;
 
     @GetMapping
     public List<Video> getVideos() {
-        return videoRepository.findAllByVideoStatus(VideoStatus.REVIEW);
+        return moderatorService.getVideos();
     }
 
     @PutMapping
-    public Video updateVideo(@RequestParam long id, @RequestParam boolean isApproved) {
-        Video video = videoRepository.findById(id).orElseThrow(NullPointerException::new);
-        if (isApproved) {
-            video.setVideoStatus(VideoStatus.APPROVED);
-        } else {
-            video.setVideoStatus(VideoStatus.REJECTED);
-        }
-        return videoRepository.save(video);
+    public Video giveReview(@RequestParam long id, @RequestParam boolean isApproved) {
+        return moderatorService.giveReview(id, isApproved);
     }
-
 }

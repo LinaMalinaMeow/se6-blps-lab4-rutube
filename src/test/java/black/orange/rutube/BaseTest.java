@@ -2,6 +2,7 @@ package black.orange.rutube;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 public class BaseTest {
     @Autowired
     protected MockMvc mockMvc;

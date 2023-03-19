@@ -2,6 +2,7 @@ package black.orange.rutube.controller;
 
 import black.orange.rutube.dto.AuthenticationRequestDto;
 import black.orange.rutube.service.UserService;
+import black.orange.rutube.service.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

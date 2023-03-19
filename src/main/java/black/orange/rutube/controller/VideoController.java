@@ -5,10 +5,7 @@ import black.orange.rutube.entity.Video;
 import black.orange.rutube.service.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,5 +18,10 @@ public class VideoController {
     @PostMapping
     public ResponseEntity<Video> addVideo(@Valid @RequestBody VideoDto videoDTO) {
         return ResponseEntity.ok(videoService.addVideo(videoDTO));
+    }
+
+    @PutMapping
+    public ResponseEntity<Video> updateVideo(@Valid @RequestBody VideoDto videoDTO) {
+        return ResponseEntity.ok(videoService.updateVideo(videoDTO));
     }
 }

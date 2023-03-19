@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "video")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -7,9 +7,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Sql(scripts = "classpath:sql/cleanDb.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "classpath:sql/cleanDb.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class AuthControllerTest extends BaseTest {
 
@@ -21,12 +22,10 @@ public class AuthControllerTest extends BaseTest {
                         .content(request))
                 .andDo(MockMvcResultHandlers.print());
 
-//        String expectedResponse = getExpectedResponse(perform);
-//        assertAll(
-//                () -> perform.andExpect(status().isOk()),
-//                () -> perform.andExpect(header().stringValues("Content-Type", MediaType.APPLICATION_JSON_VALUE)),
-//                () -> perform.andExpect(content().json(expectedResponse))
-//        );
+        String expectedResponse = getExpectedResponse(perform);
+        assertAll(
+                () -> perform.andExpect(status().isOk())
+        );
     }
 
     private String getExpectedRequest() throws Exception {

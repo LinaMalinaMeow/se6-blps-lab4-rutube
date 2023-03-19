@@ -1,39 +1,34 @@
 package black.orange.rutube.service;
 
+import black.orange.rutube.converter.UserConverter;
 import black.orange.rutube.dto.AuthenticationRequestDto;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.entity.User;
 import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
 import black.orange.rutube.exception.auth.EntityNotFoundException;
 import black.orange.rutube.exception.auth.WrongAuthException;
-import black.orange.rutube.repository.RoleRepository;
 import black.orange.rutube.repository.UserRepository;
 import black.orange.rutube.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
-@Slf4j
 @AllArgsConstructor
 public class UserService {
     private final String ENTITY_CLASS_NAME = "Пользователь";
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserConverter userConverter;
+    private final RolesService rolesService;
 
     public String auth(AuthenticationRequestDto authUser) throws AuthException {
         User userFromDataBase = findUserByEmail(authUser.getEmail());
-        if (userFromDataBase == null) {
-            throw new EntityNotFoundException(ENTITY_CLASS_NAME);
-        }
 
         if (passwordEncoder.matches(authUser.getPassword(), userFromDataBase.getPassword())) {
             return jwtTokenProvider.createToken(authUser.getEmail(), userFromDataBase.getRoles());
@@ -47,27 +42,18 @@ public class UserService {
             throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
         }
 
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
+        List<Role> userRoles = rolesService.getDefaultRoles();
 
-        User user = new User();
+        User user = userConverter.toEntity(authUser, userRoles);
 
-        user.setEmail(authUser.getEmail());
-        user.setPassword(passwordEncoder.encode(authUser.getPassword()));
-        user.setRoles(userRoles);
-
-        user = userRepository.save(user);
-
-        log.info("IN register - user: {} successfully registered", user);
+        userRepository.save(user);
 
         return jwtTokenProvider.createToken(authUser.getEmail(), userRoles);
     }
 
 
     public User findUserByEmail(String email) {
-        User result = userRepository.findByEmail(email);
-        log.info("IN findByUsername - user: {} found by email: {}", result, email);
-        return result;
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
     }
 }
