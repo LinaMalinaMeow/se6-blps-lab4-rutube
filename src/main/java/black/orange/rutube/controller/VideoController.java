@@ -20,6 +20,12 @@ public class VideoController {
         return ResponseEntity.ok(videoService.addVideo(videoDTO));
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteVideo(@Valid @RequestBody VideoDto videoDTO) {
+        videoService.deleteVideo(videoDTO);
+        return ResponseEntity.ok("Cущность удалена из бд!!!");
+    }
+
     @PutMapping
     public ResponseEntity<Video> updateVideo(@Valid @RequestBody VideoDto videoDTO) {
         return ResponseEntity.ok(videoService.updateVideo(videoDTO));

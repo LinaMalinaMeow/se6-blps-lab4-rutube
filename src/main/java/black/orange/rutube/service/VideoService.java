@@ -9,6 +9,8 @@ import black.orange.rutube.repository.VideoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @AllArgsConstructor
 @Service
 public class VideoService {
@@ -33,5 +35,12 @@ public class VideoService {
                 .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
         video.setName(videoDTO.getName());
         return videoRepository.save(video);
+    }
+
+    @Transactional
+    public void deleteVideo(VideoDto videoDTO) {
+        Video video = videoRepository.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext())
+                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
+        videoRepository.delete(video);
     }
 }

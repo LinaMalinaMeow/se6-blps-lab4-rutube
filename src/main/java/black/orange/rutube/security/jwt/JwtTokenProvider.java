@@ -11,6 +11,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,10 +33,14 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
+    private final JwtUserDetailsService userDetailsService;
+    private final RolesService rolesService;
+
     @Autowired
-    private JwtUserDetailsService userDetailsService;
-    @Autowired
-    private  RolesService rolesService;
+    public JwtTokenProvider(@Lazy JwtUserDetailsService userDetailsService, @Lazy RolesService rolesService) {
+        this.userDetailsService = userDetailsService;
+        this.rolesService = rolesService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
