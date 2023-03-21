@@ -15,17 +15,21 @@ public class VideoService {
     private final String ENTITY_CLASS_NAME = "Видео";
     private VideoConverter videoConverter;
     private VideoRepository videoRepository;
+    private UserService userService;
 
     public Video addVideo(VideoDto videoDTO) {
         if (videoRepository.existsByLink(videoDTO.getLink())) {
             throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
         }
-        Video video = videoConverter.toEntity(videoDTO);
+
+        Long userId = userService.getUserIdFromContext();
+
+        Video video = videoConverter.toEntity(videoDTO, userId);
         return videoRepository.save(video);
     }
 
     public Video updateVideo(VideoDto videoDTO) {
-        Video video = videoRepository.findByLink(videoDTO.getLink())
+        Video video = videoRepository.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext())
                 .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
         video.setName(videoDTO.getName());
         return videoRepository.save(video);

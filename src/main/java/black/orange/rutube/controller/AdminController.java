@@ -1,7 +1,7 @@
 package black.orange.rutube.controller;
 
 import black.orange.rutube.entity.Video;
-import black.orange.rutube.service.ModeratorService;
+import black.orange.rutube.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,16 +10,16 @@ import java.util.List;
 @RequestMapping("/admin")
 @RestController
 @AllArgsConstructor
-public class ModeratorController {
-    private ModeratorService moderatorService;
+public class AdminController {
+    private AdminService adminService;
 
     @GetMapping
     public List<Video> getVideos() {
-        return moderatorService.getVideos();
+        return adminService.getVideos();
     }
 
     @PutMapping
-    public Video giveReview(@RequestParam long id, @RequestParam boolean isApproved) {
-        return moderatorService.giveReview(id, isApproved);
+    public Video giveReview(@RequestParam long videoId, @RequestParam boolean isApproved) {
+        return adminService.giveReview(videoId, isApproved);
     }
 }

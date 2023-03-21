@@ -1,7 +1,7 @@
 package black.orange.rutube.exception;
 
 import black.orange.rutube.controller.AuthController;
-import black.orange.rutube.controller.ModeratorController;
+import black.orange.rutube.controller.AdminController;
 import black.orange.rutube.controller.VideoController;
 import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
 import black.orange.rutube.exception.auth.EntityNotFoundException;
@@ -21,7 +21,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@ControllerAdvice(assignableTypes = {AuthController.class, VideoController.class, ModeratorController.class})
+@ControllerAdvice(assignableTypes = {AuthController.class, VideoController.class, AdminController.class})
 public class ProcessExceptionHandler {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception e) {

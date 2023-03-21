@@ -2,7 +2,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <property name="now" value="now()" dbms="postgresql"/>
+    <property name="now" value="CURRENT_TIMESTAMP()" dbms="h2"/>
 
     <changeSet id="1.0.0" author="a.sagaidak">
         <preConditions>

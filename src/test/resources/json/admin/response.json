@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "created": "CREATED_DATE",
+    "updated": "UPDATED_DATE",
+    "name": "meow",
+    "link": "link1",
+    "videoStatus": "REVIEW"
+  },
+  {
+    "id": 2,
+    "created": "CREATED_DATE",
+    "updated": "UPDATED_DATE",
+    "name": "meow",
+    "link": "link2",
+    "videoStatus": "REVIEW"
+  },
+  {
+    "id": 3,
+    "created": "CREATED_DATE",
+    "updated": "UPDATED_DATE",
+    "name": "meow",
+    "link": "link3",
+    "videoStatus": "REVIEW"
+  }
+]

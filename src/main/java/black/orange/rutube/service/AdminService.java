@@ -10,15 +10,15 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ModeratorService {
+public class AdminService {
     private VideoRepository videoRepository;
 
     public List<Video> getVideos() {
         return videoRepository.findAllByVideoStatus(VideoStatus.REVIEW);
     }
 
-    public Video giveReview(long id, boolean isApproved) {
-        Video video = videoRepository.findById(id)
+    public Video giveReview(long videoId, boolean isApproved) {
+        Video video = videoRepository.findById(videoId)
                 .orElseThrow(NullPointerException::new);
         if (isApproved) {
             video.setVideoStatus(VideoStatus.APPROVED);

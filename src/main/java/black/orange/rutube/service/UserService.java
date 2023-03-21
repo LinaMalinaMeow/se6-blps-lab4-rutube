@@ -10,6 +10,7 @@ import black.orange.rutube.exception.auth.WrongAuthException;
 import black.orange.rutube.repository.UserRepository;
 import black.orange.rutube.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,4 +57,10 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
     }
+
+    public Long getUserIdFromContext() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByEmail(userName).getId();
+    }
+
 }

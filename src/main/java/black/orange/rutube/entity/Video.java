@@ -23,4 +23,7 @@ public class Video extends BaseEntity {
     @Column(name = "video_status")
     @Enumerated(EnumType.STRING)
     private VideoStatus videoStatus = VideoStatus.REVIEW;
+
+    @JoinColumn(name = "user_id")
+    private Long userId;
 }
