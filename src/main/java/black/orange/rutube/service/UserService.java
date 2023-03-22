@@ -1,7 +1,7 @@
 package black.orange.rutube.service;
 
 import black.orange.rutube.converter.UserConverter;
-import black.orange.rutube.dto.AuthenticationRequestDto;
+import black.orange.rutube.dto.UserDto;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.entity.User;
 import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
@@ -28,7 +28,7 @@ public class UserService {
     private final UserConverter userConverter;
     private final RolesService rolesService;
 
-    public String auth(AuthenticationRequestDto authUser) throws AuthException {
+    public String auth(UserDto authUser) throws AuthException {
         User userFromDataBase = findUserByEmail(authUser.getEmail());
 
         if (passwordEncoder.matches(authUser.getPassword(), userFromDataBase.getPassword())) {
@@ -38,7 +38,7 @@ public class UserService {
         throw new WrongAuthException();
     }
 
-    public String register(AuthenticationRequestDto authUser) {
+    public String register(UserDto authUser) {
         if (userRepository.existsByEmail(authUser.getEmail())) {
             throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
         }

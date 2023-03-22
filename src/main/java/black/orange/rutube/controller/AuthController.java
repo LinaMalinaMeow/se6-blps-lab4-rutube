@@ -1,6 +1,6 @@
 package black.orange.rutube.controller;
 
-import black.orange.rutube.dto.AuthenticationRequestDto;
+import black.orange.rutube.dto.UserDto;
 import black.orange.rutube.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody AuthenticationRequestDto authenticationRequestDto) {
-        String token = userService.register(authenticationRequestDto);
+    public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto) {
+        String token = userService.register(userDto);
         return ResponseEntity.ok().body(token);
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<?> auth(@Valid @RequestBody AuthenticationRequestDto authenticationRequestDto) throws AuthException {
-        String token = userService.auth(authenticationRequestDto);
+    public ResponseEntity<?> auth(@Valid @RequestBody UserDto userDto) throws AuthException {
+        String token = userService.auth(userDto);
         return ResponseEntity.ok().body(token);
     }
 }
