@@ -1,8 +1,7 @@
 package black.orange.rutube.service;
 
 import black.orange.rutube.entity.Role;
-import black.orange.rutube.exception.auth.EntityNotFoundException;
-import black.orange.rutube.repository.RoleRepository;
+import black.orange.rutube.service.db.RoleDbService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,8 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RolesService {
     private final String DEFAULT_ROLE_NAME = "ROLE_USER";
-    private final String ENTITY_ROLE_CLASS_NAME = "Роль";
-    private final RoleRepository roleRepository;
+    private final RoleDbService roleDbService;
 
 
     public List<String> getRoleNames(List<Role> userRoles) {
@@ -31,8 +29,7 @@ public class RolesService {
     }
 
     public List<Role> getDefaultRoles() {
-        Role roleUser = roleRepository.findByName(DEFAULT_ROLE_NAME)
-                .orElseThrow(() -> new EntityNotFoundException(ENTITY_ROLE_CLASS_NAME));
+        Role roleUser = roleDbService.findByName(DEFAULT_ROLE_NAME);
         return List.of(roleUser);
     }
 
