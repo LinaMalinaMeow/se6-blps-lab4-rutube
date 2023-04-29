@@ -1,0 +1,23 @@
+{
+  "namespace": "black.orange.rutube.dto.avro",
+  "type": "record",
+  "name": "MailAvro",
+  "fields": [
+    {
+      "name": "emailTo",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "message",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

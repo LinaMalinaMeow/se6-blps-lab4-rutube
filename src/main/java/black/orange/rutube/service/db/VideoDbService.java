@@ -41,7 +41,7 @@ public class VideoDbService {
     }
 
     @Transactional
-    public Video create(Video video) {
+    public Video save(Video video) {
         return videoRepository.save(video);
     }
 

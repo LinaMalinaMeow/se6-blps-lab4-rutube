@@ -28,4 +28,10 @@ public class UserDbService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
     }
+
+    @Transactional(readOnly = true)
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
+    }
 }

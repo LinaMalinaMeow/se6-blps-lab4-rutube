@@ -1,7 +1,7 @@
 package black.orange.rutube.exception;
 
-import black.orange.rutube.controller.AuthController;
 import black.orange.rutube.controller.AdminController;
+import black.orange.rutube.controller.AuthController;
 import black.orange.rutube.controller.VideoController;
 import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
 import black.orange.rutube.exception.auth.EntityNotFoundException;

@@ -1,6 +1,5 @@
 package black.orange.rutube.repository;
 
-import black.orange.rutube.entity.User;
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.entity.VideoStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

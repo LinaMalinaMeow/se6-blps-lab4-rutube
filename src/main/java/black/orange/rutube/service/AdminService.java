@@ -2,6 +2,7 @@ package black.orange.rutube.service;
 
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.entity.VideoStatus;
+import black.orange.rutube.kafka.ProducerService;
 import black.orange.rutube.service.db.VideoDbService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,12 @@ import java.util.List;
 public class AdminService {
 
     private final VideoDbService videoDbService;
+    private final UserService userService;
+    private final VideoService videoService;
+    private final ProducerService producerService;
 
     public List<Video> getVideos() {
-        return videoDbService.findAllByVideoStatus(VideoStatus.REVIEW);
+        return videoService.getVideosByVideoStatus(VideoStatus.REVIEW);
     }
 
     public Video giveReview(long videoId, boolean isApproved) {
@@ -25,7 +29,14 @@ public class AdminService {
         } else {
             video.setVideoStatus(VideoStatus.REJECTED);
         }
-        return videoDbService.create(video);
+
+        String userEmail = userService.getUserEmail(video.getUserId());
+
+        video = videoDbService.save(video);
+
+        producerService.send(userEmail);
+
+        return video;
     }
 
 }

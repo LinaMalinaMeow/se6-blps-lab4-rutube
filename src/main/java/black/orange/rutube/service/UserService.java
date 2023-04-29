@@ -57,4 +57,7 @@ public class UserService {
         return userDbService.findUserByEmail(userName).getId();
     }
 
+    public String getUserEmail(Long userId) {
+       return userDbService.findUserById(userId).getEmail();
+    }
 }
