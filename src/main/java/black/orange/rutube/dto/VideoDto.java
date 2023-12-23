@@ -9,10 +9,10 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class VideoDto {
-   @NonNull
-   @NotEmpty (message = "Имя не должно быть пустым!!!")
-   private String name;
-    @NonNull
+
+    @NotEmpty (message = "Имя не должно быть пустым!!!")
+    private String name;
+
     @NotEmpty (message = "Ссылка не должна быть пустой!!!")
     private String link;
 }

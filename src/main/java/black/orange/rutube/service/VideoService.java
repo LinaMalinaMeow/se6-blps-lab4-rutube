@@ -9,17 +9,19 @@ import black.orange.rutube.service.db.VideoDbService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class VideoService {
-    private final String ENTITY_CLASS_NAME = "Видео";
+    private final static String ENTITY_CLASS_NAME = "Видео";
     private final VideoConverter videoConverter;
     private final VideoDbService videoDbService;
     private final UserService userService;
 
-    public Video addVideo(VideoDto videoDTO) {
+    @Transactional
+    public Video addVideoForCurrentUser(VideoDto videoDTO) {
         if (videoDbService.existsByLink(videoDTO.getLink())) {
             throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
         }
@@ -30,13 +32,15 @@ public class VideoService {
         return videoDbService.save(video);
     }
 
-    public Video updateVideo(VideoDto videoDTO) {
+    @Transactional
+    public Video updateVideoForCurrentUser(VideoDto videoDTO) {
         Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext());
         video.setName(videoDTO.getName());
         return videoDbService.save(video);
     }
 
-    public void deleteVideo(VideoDto videoDTO) {
+    @Transactional
+    public void deleteVideoForCurrentUser(VideoDto videoDTO) {
         Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext());
         videoDbService.delete(video);
     }

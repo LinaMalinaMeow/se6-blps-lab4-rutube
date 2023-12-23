@@ -3,6 +3,7 @@ package black.orange.rutube.controller;
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.service.AdminService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +15,12 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping
-    public List<Video> getVideos() {
-        return adminService.getVideos();
+    public ResponseEntity<List<Video>> getVideos() {
+        return ResponseEntity.ok().body(adminService.getVideos());
     }
 
     @PutMapping
-    public Video giveReview(@RequestParam long videoId, @RequestParam boolean isApproved) {
-        return adminService.giveReview(videoId, isApproved);
+    public ResponseEntity<Video> giveReview(@RequestParam long videoId, @RequestParam boolean isApproved) {
+        return ResponseEntity.ok().body(adminService.giveReview(videoId, isApproved));
     }
 }

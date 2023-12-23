@@ -1,6 +1,7 @@
 package black.orange.rutube.service;
 
 import black.orange.rutube.converter.UserConverter;
+import black.orange.rutube.dto.TokenDto;
 import black.orange.rutube.dto.UserDto;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.entity.User;
@@ -27,28 +28,28 @@ public class UserService {
     private final UserConverter userConverter;
     private final RolesService rolesService;
 
-    public String auth(UserDto authUser) throws AuthException {
-        User userFromDataBase = userDbService.findUserByEmail(authUser.getEmail());
+    public TokenDto auth(UserDto authDto) {
+        User userFromDataBase = userDbService.findUserByEmail(authDto.getEmail());
 
-        if (passwordEncoder.matches(authUser.getPassword(), userFromDataBase.getPassword())) {
-            return jwtTokenProvider.createToken(authUser.getEmail(), userFromDataBase.getRoles());
+        if (passwordEncoder.matches(authDto.getPassword(), userFromDataBase.getEncodedPassword())) {
+            return TokenDto.builder().token(jwtTokenProvider.createToken(authDto.getEmail(), userFromDataBase.getRoles())).build();
         }
 
         throw new WrongAuthException();
     }
 
-    public String register(UserDto authUser) {
-        if (userDbService.existsByEmail(authUser.getEmail())) {
+    public TokenDto register(UserDto registerDto) {
+        if (userDbService.existsByEmail(registerDto.getEmail().trim())) {
             throw new EntityAlreadyExistsException(ENTITY_CLASS_NAME);
         }
 
         List<Role> userRoles = rolesService.getDefaultRoles();
 
-        User user = userConverter.toEntity(authUser, userRoles);
+        User user = userConverter.toEntity(registerDto, userRoles);
 
         userDbService.create(user);
 
-        return jwtTokenProvider.createToken(authUser.getEmail(), userRoles);
+        return TokenDto.builder().token(jwtTokenProvider.createToken(registerDto.getEmail(), userRoles)).build();
     }
 
 

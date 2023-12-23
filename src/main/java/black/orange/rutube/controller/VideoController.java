@@ -1,5 +1,6 @@
 package black.orange.rutube.controller;
 
+import black.orange.rutube.dto.MessageDto;
 import black.orange.rutube.dto.VideoDto;
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.service.VideoService;
@@ -17,17 +18,17 @@ public class VideoController {
 
     @PostMapping
     public ResponseEntity<Video> addVideo(@Valid @RequestBody VideoDto videoDTO) {
-        return ResponseEntity.ok(videoService.addVideo(videoDTO));
+        return ResponseEntity.ok().body(videoService.addVideoForCurrentUser(videoDTO));
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteVideo(@Valid @RequestBody VideoDto videoDTO) {
-        videoService.deleteVideo(videoDTO);
-        return ResponseEntity.ok("Cущность удалена из бд!!!");
+    public ResponseEntity<MessageDto> deleteVideo(@Valid @RequestBody VideoDto videoDTO) {
+        videoService.deleteVideoForCurrentUser(videoDTO);
+        return ResponseEntity.ok().body(MessageDto.builder().message("Cущность удалена из бд!!!").build());
     }
 
     @PutMapping
     public ResponseEntity<Video> updateVideo(@Valid @RequestBody VideoDto videoDTO) {
-        return ResponseEntity.ok(videoService.updateVideo(videoDTO));
+        return ResponseEntity.ok().body(videoService.updateVideoForCurrentUser(videoDTO));
     }
 }
