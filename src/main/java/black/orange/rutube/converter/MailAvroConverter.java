@@ -1,11 +1,9 @@
 package black.orange.rutube.converter;
 
 import black.orange.rutube.dto.avro.MailAvro;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
 public class MailAvroConverter {
 
     public MailAvro toAvro(String emailTo) {

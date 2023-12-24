@@ -12,14 +12,16 @@ import org.springframework.stereotype.Service;
 public class ConsumerService {
     private final EmailService emailService;
 
-    @KafkaListener(topics = {"email-topic"})
-    public void listenTopic(ConsumerRecord<String, MailAvro> record) {
+    @KafkaListener(topics = {"moder-topic"})
+    public void listenModerTopic(ConsumerRecord<String, MailAvro> record) {
+        String userEmail = String.valueOf(record.value().getEmailTo());
+        emailService.sendModeratorMessage(userEmail);
+    }
+
+    @KafkaListener(topics = {"review-topic"})
+    public void listenReviewTopic(ConsumerRecord<String, MailAvro> record) {
         String userEmail = String.valueOf(record.value().getEmailTo());
         String message = String.valueOf(record.value().getMessage());
-        if (message.equals("null")) {
-            emailService.sendModeratorMessage(userEmail);
-        } else {
-            emailService.sendReviewNotification(userEmail, message);
-        }
+        emailService.sendReviewNotification(userEmail, message);
     }
 }

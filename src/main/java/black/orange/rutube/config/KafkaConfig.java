@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Getter
 public class KafkaConfig {
-    private final String topicName = "email-topic";
+    private final String moderatorTopic = "moder-topic";
+    private final String reviewTopic = "review-topic";
 }

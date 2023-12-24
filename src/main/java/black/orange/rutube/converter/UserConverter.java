@@ -17,8 +17,8 @@ public class UserConverter {
     public User toEntity(UserDto authUser, List<Role> userRoles) {
         User user = new User();
 
-        user.setEmail(authUser.getEmail());
-        user.setPassword(passwordEncoder.encode(authUser.getPassword()));
+        user.setEmail(authUser.getEmail().trim());
+        user.setEncodedPassword(passwordEncoder.encode(authUser.getPassword()));
         user.setRoles(userRoles);
 
         return user;

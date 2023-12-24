@@ -15,11 +15,11 @@ public class ProducerService {
     private final MailAvroConverter mailAvroConverter;
 
     public void send(String userEmail) {
-        template.send(kafkaConfig.getTopicName(), mailAvroConverter.toAvro(userEmail));
+        template.send(kafkaConfig.getModeratorTopic(), mailAvroConverter.toAvro(userEmail));
     }
 
     public void send(String userEmail, String message) {
         MailAvro mailAvro = mailAvroConverter.toAvro(userEmail, message);
-        template.send(kafkaConfig.getTopicName(), mailAvro);
+        template.send(kafkaConfig.getReviewTopic(), mailAvro);
     }
 }
