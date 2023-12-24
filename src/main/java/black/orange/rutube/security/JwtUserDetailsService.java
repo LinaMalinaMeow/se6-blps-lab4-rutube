@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
+    private final static String ENTITY_CLASS_NAME = "Пользователь";
     private final UserDbService userDbService;
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findAllByVideoStatus(VideoStatus videoStatus);
 
-    Boolean existsByLink(String link);
+    boolean existsByLink(String link);
 
     Optional<Video> findByLinkAndUserId(String link, Long userId);
 }

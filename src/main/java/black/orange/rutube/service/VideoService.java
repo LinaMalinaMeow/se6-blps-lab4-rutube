@@ -4,7 +4,8 @@ import black.orange.rutube.converter.VideoConverter;
 import black.orange.rutube.dto.VideoDto;
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.entity.VideoStatus;
-import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
+import black.orange.rutube.exception.EntityAlreadyExistsException;
+import black.orange.rutube.exception.EntityNotFoundException;
 import black.orange.rutube.service.db.VideoDbService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,14 +35,14 @@ public class VideoService {
 
     @Transactional
     public Video updateVideoForCurrentUser(VideoDto videoDTO) {
-        Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext());
+        Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext()).orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
         video.setName(videoDTO.getName());
         return videoDbService.save(video);
     }
 
     @Transactional
     public void deleteVideoForCurrentUser(VideoDto videoDTO) {
-        Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext());
+        Video video = videoDbService.findByLinkAndUserId(videoDTO.getLink(), userService.getUserIdFromContext()).orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
         videoDbService.delete(video);
     }
 

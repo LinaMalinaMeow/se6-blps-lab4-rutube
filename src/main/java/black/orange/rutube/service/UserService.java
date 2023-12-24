@@ -5,7 +5,8 @@ import black.orange.rutube.dto.TokenDto;
 import black.orange.rutube.dto.UserDto;
 import black.orange.rutube.entity.Role;
 import black.orange.rutube.entity.User;
-import black.orange.rutube.exception.auth.EntityAlreadyExistsException;
+import black.orange.rutube.exception.EntityAlreadyExistsException;
+import black.orange.rutube.exception.EntityNotFoundException;
 import black.orange.rutube.exception.auth.WrongAuthException;
 import black.orange.rutube.security.jwt.JwtTokenProvider;
 import black.orange.rutube.service.db.UserDbService;
@@ -14,14 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.message.AuthException;
 import java.util.List;
 
 
 @Service
 @AllArgsConstructor
 public class UserService {
-    private final String ENTITY_CLASS_NAME = "Пользователь";
+    private final static String ENTITY_CLASS_NAME = "Пользователь";
     private final UserDbService userDbService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -29,7 +29,7 @@ public class UserService {
     private final RolesService rolesService;
 
     public TokenDto auth(UserDto authDto) {
-        User userFromDataBase = userDbService.findUserByEmail(authDto.getEmail());
+        User userFromDataBase = userDbService.findUserByEmail(authDto.getEmail()).orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
 
         if (passwordEncoder.matches(authDto.getPassword(), userFromDataBase.getEncodedPassword())) {
             return TokenDto.builder().token(jwtTokenProvider.createToken(authDto.getEmail(), userFromDataBase.getRoles())).build();
@@ -55,10 +55,10 @@ public class UserService {
 
     public Long getUserIdFromContext() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userDbService.findUserByEmail(userName).getId();
+        return userDbService.findUserByEmail(userName).orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME)).getId();
     }
 
     public String getUserEmail(Long userId) {
-       return userDbService.findUserById(userId).getEmail();
+        return userDbService.findUserById(userId).orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME)).getEmail();
     }
 }

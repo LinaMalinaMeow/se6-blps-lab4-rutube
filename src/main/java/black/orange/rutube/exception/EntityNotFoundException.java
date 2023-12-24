@@ -1,4 +1,4 @@
-package black.orange.rutube.exception.auth;
+package black.orange.rutube.exception;
 
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String message) {

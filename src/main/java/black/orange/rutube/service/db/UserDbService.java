@@ -1,16 +1,16 @@
 package black.orange.rutube.service.db;
 
 import black.orange.rutube.entity.User;
-import black.orange.rutube.exception.auth.EntityNotFoundException;
 import black.orange.rutube.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UserDbService {
-    private final String ENTITY_CLASS_NAME = "Пользователь";
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -24,14 +24,12 @@ public class UserDbService {
     }
 
     @Transactional(readOnly = true)
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)
-    public User findUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 }

@@ -1,5 +1,6 @@
 package black.orange.rutube.service;
 
+import black.orange.rutube.config.MessageTemplatesConfig;
 import black.orange.rutube.entity.Video;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,14 +10,16 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class MessageService {
+    private MessageTemplatesConfig messageTemplatesConfig;
+
     public String getReviewTitle() {
-        return "Напоминание о ревью!";
+        return messageTemplatesConfig.getReviewTitle();
     }
 
     public String getNeedReviewBody(List<Video> videos) {
-        StringBuilder message = new StringBuilder("Добрый вечер, модератор!\n");
-        message.append("Пора бы уже проверить вот эти видео:\n");
-        message.append("Id\tLink\n");
+        StringBuilder message = new StringBuilder(messageTemplatesConfig.getModerHello());
+        message.append(messageTemplatesConfig.getModerCheck());
+        message.append(messageTemplatesConfig.getModerHeader());
         for (Video video : videos) {
             message.append(video.getId()).append("\t").append(video.getLink()).append("\n");
         }
@@ -24,10 +27,10 @@ public class MessageService {
     }
 
     public String getModeratorTitle() {
-        return "Твоё видео оценил модератор";
+        return messageTemplatesConfig.getModerTitle();
     }
 
     public String getModerBody() {
-        return "Пора бы зайти и посмотреть чу там!!!";
+        return messageTemplatesConfig.getModerBody();
     }
 }

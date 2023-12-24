@@ -2,20 +2,19 @@ package black.orange.rutube.service.db;
 
 import black.orange.rutube.entity.Video;
 import black.orange.rutube.entity.VideoStatus;
-import black.orange.rutube.exception.auth.EntityNotFoundException;
 import black.orange.rutube.repository.VideoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @AllArgsConstructor
 @Service
 public class VideoDbService {
     private final VideoRepository videoRepository;
-    private final String ENTITY_CLASS_NAME = "Видео";
 
 
     @Transactional(readOnly = true)
@@ -24,9 +23,8 @@ public class VideoDbService {
     }
 
     @Transactional(readOnly = true)
-    public Video findByLinkAndUserId(String link, Long userId) {
-        return videoRepository.findByLinkAndUserId(link, userId)
-                .orElseThrow(() -> new EntityNotFoundException(ENTITY_CLASS_NAME));
+    public Optional<Video> findByLinkAndUserId(String link, Long userId) {
+        return videoRepository.findByLinkAndUserId(link, userId);
     }
 
     @Transactional(readOnly = true)
@@ -35,9 +33,8 @@ public class VideoDbService {
     }
 
     @Transactional(readOnly = true)
-    public Video findById(Long videoId) {
-        return videoRepository.findById(videoId)
-                .orElseThrow(NullPointerException::new);
+    public Optional<Video> findById(Long videoId) {
+        return videoRepository.findById(videoId);
     }
 
     @Transactional
